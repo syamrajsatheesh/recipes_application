@@ -41,6 +41,10 @@ def print_some():
 entry1 = Entry(window,textvariable=fn)
 entry1.place(x=240, y=240)
 
+
+button2 = Button(window,text="D", fg="green", bg="white", relief=RIDGE, font=("arial",14,"bold"), command=print_some)
+button2.place(x=100, y=100)
+
 list1 = {"tsp", "Tbp"}
 droplist = OptionMenu(window, var, *list1)
 var.set("Select spoon")
