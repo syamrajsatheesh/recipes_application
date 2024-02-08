@@ -1,5 +1,2 @@
 refresh after adding
 
-
-delete
-

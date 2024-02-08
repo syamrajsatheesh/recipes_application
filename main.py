@@ -20,6 +20,7 @@ class MainWindow:
                                bg="black", relief="solid", font=("arial",16,"bold"))
         self.title_app.pack(fill=tk.BOTH, pady=20, padx=0, expand=False)
 
+
         self.go_button = tk.Button(window, text="Go", command=self.open_add_recipe_window)
         self.go_button.place(x=300, y=300)
 
@@ -47,7 +48,7 @@ class MainWindow:
         self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.listbox.bind('<<ListboxSelect>>', self.open_view_recipe_window)
+        self.listbox.bind('<<ListboxSelect>>', self.view_recipe)
 
 
     def exit_app(self):
@@ -74,11 +75,11 @@ class MainWindow:
     def add_delete_button(self):
         add_button = tk.Button(self.window,text="ADD", fg="green", bg="white",
                             relief=tk.RIDGE, font=("arial",12,"bold"),
-                            )
+                            command=self.open_add_recipe_window)
         add_button.place(x=20, y=70)
 
         delete_button = tk.Button(self.window,text="DELETE", fg="red", bg="white",
-                               relief=tk.RIDGE, font=("arial",12,"bold"))
+                               relief=tk.RIDGE, font=("arial",12,"bold"), command=self.open_delete_recipe_window)
         delete_button.place(x=100, y=70)
 
 
@@ -88,7 +89,7 @@ class MainWindow:
         essay_app = AddRecipeWindow(add_recipe_window)
 
 
-    def open_view_recipe_window(self, event):
+    def view_recipe(self, event):
 
         index = self.listbox.curselection()
         selected_item = self.listbox.get(index)
@@ -97,6 +98,11 @@ class MainWindow:
         view_recipe_window = tk.Toplevel(self.window)
         item_viewer = ViewRecipeWindow(view_recipe_window)
         item_viewer.display_item(item_description)
+
+    def open_delete_recipe_window(self):
+
+        delete_recipe_window = tk.Toplevel(self.window)
+        delete_recipe = DeleteRecipeWindow(delete_recipe_window)
 
 
     def load_data_from_dat(self, key):
@@ -111,7 +117,65 @@ class MainWindow:
             print(f"File '{file_path}' not found.")
             return None
 
+##------------------------------------------------------------------
+##------------------------------------------------------------------
+class DeleteRecipeWindow:
 
+
+    def __init__(self, window):
+
+
+        self.window = window
+        file_path = "database.dat"
+
+        try:
+            with open(file_path, 'rb') as file:
+                data = pickle.load(file)
+            items = list(data.keys())
+        except FileNotFoundError:
+            print(f"File '{file_path}' not found.")
+
+        self.box_frame = tk.Frame(self.window, width=80, height=60)
+        self.box_frame.place(x=20, y=120)
+        self.listbox = tk.Listbox(self.box_frame, selectmode=tk.SINGLE)
+
+        for item in items:
+            self.listbox.insert(tk.END, item)
+        scrollbar = tk.Scrollbar(self.box_frame, orient="vertical",
+                                  command=self.listbox.yview)
+        self.listbox.configure(yscrollcommand=scrollbar.set)
+        self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+
+        self.go_button = tk.Button(window, text="Delete", command = self.view_recipe)
+        self.go_button.place(x=300, y=300)
+
+
+    def view_recipe(self):
+
+        index = self.listbox.curselection()
+        selected_item = self.listbox.get(index)
+
+        tkinter.messagebox.showinfo("Message", 'Recipe deleted from Database.')
+
+
+        # Load existing data from the pickle file
+        with open("database.dat", 'rb') as file:
+            existing_data = pickle.load(file)
+
+        # Delete data from dictionary
+        del existing_data[selected_item]
+
+        # Write the updated data back to the pickle file
+        with open("database.dat", 'wb') as file:
+            pickle.dump(existing_data, file)
+
+
+
+
+##------------------------------------------------------------------
+##------------------------------------------------------------------
 class ViewRecipeWindow:
     def __init__(self, window):
         self.window = window
@@ -168,10 +232,6 @@ class AddRecipeWindow:
         self.save_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
 
-        self.view_button = tk.Button(window, text="View", command=self.load_data_from_dat)
-        self.view_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
-
-
     def check_redundancy(self):
 
         name = self.recipe_name_entry.get()
@@ -191,23 +251,42 @@ class AddRecipeWindow:
 
     def save_data_to_dat(self):
 
+        flag = False
+
         key = self.recipe_name_entry.get()
+
+        if key == None or key == "":
+            tkinter.messagebox.showinfo("Warning!", 'Write the Recipe Name.')
+        else:
+            flag = True
+
         value = self.steps_box.get("1.0", tk.END)
 
-        try:
-            # Load existing data from the pickle file
-            with open("database.dat", 'rb') as file:
-                existing_data = pickle.load(file)
-        except (FileNotFoundError, EOFError):
-            # Handle the case where the file is not found or is empty
-            existing_data = {}
+        if value == None or value == "":
+            flag = False
+            tkinter.messagebox.showinfo("Warning!", 'Write the Steps.')
+        else:
+            pass
 
-        # Append new data to the existing data
-        existing_data[key] = value
+        if flag==True:
 
-        # Write the updated data back to the pickle file
-        with open("database.dat", 'wb') as file:
-            pickle.dump(existing_data, file)
+            try:
+                # Load existing data from the pickle file
+                with open("database.dat", 'rb') as file:
+                    existing_data = pickle.load(file)
+            except (FileNotFoundError, EOFError):
+                # Handle the case where the file is not found or is empty
+                existing_data = {}
+
+            # Append new data to the existing data
+            existing_data[key] = value
+
+            # Write the updated data back to the pickle file
+            with open("database.dat", 'wb') as file:
+                pickle.dump(existing_data, file)
+
+        else:
+            tkinter.messagebox.showinfo("Warning!", 'Fill the boxes')
 
 
 
