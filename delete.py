@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox
 import pickle
+from file import EditFile
 
 class DeleteRecipeWindow:
 
@@ -10,14 +11,11 @@ class DeleteRecipeWindow:
         self.window = window
         self.main_window = main_window
         self.window.geometry("500x500")
-        file_path = "database.dat"
 
-        try:
-            with open(file_path, 'rb') as file:
-                data = pickle.load(file)
-            items = list(data.keys())
-        except FileNotFoundError:
-            print(f"File '{file_path}' not found.")
+        data = EditFile.read_from_file()
+
+        items = list(data.keys())
+
 
         self.box_frame = tk.Frame(self.window, width=80, height=60)
         self.box_frame.place(x=20, y=120)

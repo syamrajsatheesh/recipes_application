@@ -1,9 +1,10 @@
 import tkinter as tk
 import tkinter.messagebox
 import pickle
-from add_recipe_window import AddRecipeWindow
-from view_recipe_window import ViewRecipeWindow
-from delete_recipe_window import DeleteRecipeWindow
+from add import AddRecipeWindow
+from view import ViewRecipeWindow
+from delete import DeleteRecipeWindow
+from file import EditFile
 
 class MainWindow:
 
@@ -23,15 +24,10 @@ class MainWindow:
         self.listbox_app()
 
     def listbox_app(self):
-        file_path = "database.dat"
 
-        try:
-            with open(file_path, 'rb') as file:
-                data = pickle.load(file)
-            items = list(data.keys())
-            
-        except FileNotFoundError:
-            print(f"File '{file_path}' not found.")
+        data = EditFile.read_from_file()
+
+        items = list(data.keys())
 
         self.box_frame = tk.Frame(self.window, width=80, height=60)
         self.box_frame.place(x=20, y=120)
