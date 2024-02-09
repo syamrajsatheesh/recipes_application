@@ -21,9 +21,6 @@ class MainWindow:
         self.title_app.pack(fill=tk.BOTH, pady=20, padx=0, expand=False)
 
 
-        self.go_button = tk.Button(window, text="Go", command=self.open_add_recipe_window)
-        self.go_button.place(x=300, y=300)
-
         self.menu_app()
         self.add_delete_button()
 
@@ -126,6 +123,7 @@ class DeleteRecipeWindow:
 
 
         self.window = window
+        self.window.geometry("500x500")
         file_path = "database.dat"
 
         try:
@@ -148,8 +146,8 @@ class DeleteRecipeWindow:
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
 
-        self.go_button = tk.Button(window, text="Delete", command = self.view_recipe)
-        self.go_button.place(x=300, y=300)
+        self.delete_button = tk.Button(window, text="Delete", command = self.view_recipe)
+        self.delete_button.place(x=300, y=300)
 
 
     def view_recipe(self):

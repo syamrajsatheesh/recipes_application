@@ -1,15 +1,20 @@
 import tkinter as tk
 
 root = tk.Tk()
-root.title("Image Display")
+root.title("Scrollable List Box Example")
+root.geometry("600x400")  # Set the size of the root window
 
-# Load the image from the current directory
-try:
-    image = tk.PhotoImage(file="image.png")
-    resized_image = image.subsample(5, 5)
-    label = tk.Label(root, image=resized_image)
-    label.pack()
-except tk.TclError:
-    print("Error: Image file not found or not supported.")
+# Create a scrollbar
+scrollbar = tk.Scrollbar(root)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+# Create a list box
+listbox = tk.Listbox(root, yscrollcommand=scrollbar.set, width=50, height=20)  # Increase the size of the list box
+for i in range(1000):  # Adding 1000 items to the list box
+    listbox.insert(tk.END, f"Item {i+1}")
+listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)  # Adjust the fill and expand options
+
+# Configure the scrollbar to scroll the list box
+scrollbar.config(command=listbox.yview)
 
 root.mainloop()
