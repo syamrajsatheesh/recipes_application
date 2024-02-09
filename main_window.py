@@ -20,13 +20,16 @@ class MainWindow:
 
         self.menu_app()
         self.add_delete_button()
+        self.listbox_app()
 
+    def listbox_app(self):
         file_path = "database.dat"
 
         try:
             with open(file_path, 'rb') as file:
                 data = pickle.load(file)
             items = list(data.keys())
+            
         except FileNotFoundError:
             print(f"File '{file_path}' not found.")
 
@@ -42,7 +45,14 @@ class MainWindow:
         self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.listbox.bind('<<ListboxSelect>>', self.view_recipe)
+        self.listbox.bind('<<ListboxSelect>>', self.open_view_recipe_window)
+        
+
+
+    def update_listbox(self, items):
+        self.listbox.delete(0, tk.END)
+        for item in items:
+            self.listbox.insert(tk.END, item)
 
 
     def exit_app(self):
@@ -83,14 +93,14 @@ class MainWindow:
         essay_app = AddRecipeWindow(add_recipe_window)
 
 
-    def view_recipe(self, event):
+    def open_view_recipe_window(self, event):
 
         index = self.listbox.curselection()
         selected_item = self.listbox.get(index)
         item_description = self.load_data_from_dat(selected_item)
 
-        view_recipe_window = tk.Toplevel(self.window)
-        item_viewer = ViewRecipeWindow(view_recipe_window)
+        open_view_recipe_window_window = tk.Toplevel(self.window)
+        item_viewer = ViewRecipeWindow(open_view_recipe_window_window)
         item_viewer.display_item(item_description)
 
     def open_delete_recipe_window(self):
@@ -106,7 +116,10 @@ class MainWindow:
             with open(file_path, 'rb') as file:
                 data = pickle.load(file)
 
+            items = list(data.keys())
+            self.update_listbox(items)
             return data[key]
+        
         except FileNotFoundError:
             print(f"File '{file_path}' not found.")
             return None
