@@ -5,10 +5,10 @@ import pickle
 class DeleteRecipeWindow:
 
 
-    def __init__(self, window):
-
+    def __init__(self, window, main_window):
 
         self.window = window
+        self.main_window = main_window
         self.window.geometry("500x500")
         file_path = "database.dat"
 
@@ -41,8 +41,6 @@ class DeleteRecipeWindow:
         index = self.listbox.curselection()
         selected_item = self.listbox.get(index)
 
-        tkinter.messagebox.showinfo("Message", 'Recipe deleted from Database.')
-
 
         # Load existing data from the pickle file
         with open("database.dat", 'rb') as file:
@@ -54,4 +52,15 @@ class DeleteRecipeWindow:
         # Write the updated data back to the pickle file
         with open("database.dat", 'wb') as file:
             pickle.dump(existing_data, file)
+
+        tkinter.messagebox.showinfo("Message", 'Recipe deleted from Database.')
+
+        self.main_window.update_listbox(list(existing_data.keys()))
+        self.update_listbox2(list(existing_data.keys()))
+
+
+    def update_listbox2(self, items):
+        self.listbox.delete(0, tk.END)
+        for item in items:
+            self.listbox.insert(tk.END, item)
 

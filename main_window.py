@@ -90,7 +90,7 @@ class MainWindow:
 
     def open_add_recipe_window(self):
         add_recipe_window = tk.Toplevel(self.window)
-        essay_app = AddRecipeWindow(add_recipe_window)
+        add_recipe = AddRecipeWindow(add_recipe_window, self)
 
 
     def open_view_recipe_window(self, event):
@@ -106,7 +106,7 @@ class MainWindow:
     def open_delete_recipe_window(self):
 
         delete_recipe_window = tk.Toplevel(self.window)
-        delete_recipe = DeleteRecipeWindow(delete_recipe_window)
+        delete_recipe = DeleteRecipeWindow(delete_recipe_window, self)
 
 
     def load_data_from_dat(self, key):

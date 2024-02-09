@@ -5,8 +5,9 @@ import pickle
 class AddRecipeWindow:
 
 
-    def __init__(self, window):
+    def __init__(self, window, main_window):
         self.window = window
+        self.main_window = main_window
         self.window.title("New Recipe")
         self.window.geometry("850x500")
 
@@ -88,6 +89,9 @@ class AddRecipeWindow:
             # Write the updated data back to the pickle file
             with open("database.dat", 'wb') as file:
                 pickle.dump(existing_data, file)
+
+            self.main_window.update_listbox(list(existing_data.keys()))
+            self.window.destroy()
 
         else:
             tkinter.messagebox.showinfo("Warning!", 'Fill the boxes')
