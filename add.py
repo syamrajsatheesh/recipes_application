@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox
 import pickle
+from file import EditFile
 
 class AddRecipeWindow:
 
@@ -75,20 +76,7 @@ class AddRecipeWindow:
 
         if flag==True:
 
-            try:
-                # Load existing data from the pickle file
-                with open("database.dat", 'rb') as file:
-                    existing_data = pickle.load(file)
-            except (FileNotFoundError, EOFError):
-                # Handle the case where the file is not found or is empty
-                existing_data = {}
-
-            # Append new data to the existing data
-            existing_data[key] = value
-
-            # Write the updated data back to the pickle file
-            with open("database.dat", 'wb') as file:
-                pickle.dump(existing_data, file)
+            existing_data = EditFile.write_to_file(key, value)
 
             self.main_window.update_listbox(list(existing_data.keys()))
             self.window.destroy()

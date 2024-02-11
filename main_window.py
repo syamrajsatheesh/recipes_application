@@ -23,11 +23,12 @@ class MainWindow:
         self.add_delete_button()
         self.listbox_app()
 
+
     def listbox_app(self):
 
         data = EditFile.read_from_file()
 
-        items = list(data.keys())
+        items = sorted(list(data.keys()))
 
         self.box_frame = tk.Frame(self.window, width=80, height=60)
         self.box_frame.place(x=20, y=120)

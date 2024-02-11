@@ -10,15 +10,15 @@ class DeleteRecipeWindow:
 
         self.window = window
         self.main_window = main_window
-        self.window.geometry("500x500")
+        self.window.geometry("300x300")
 
         data = EditFile.read_from_file()
 
-        items = list(data.keys())
+        items = sorted(list(data.keys()))
 
 
         self.box_frame = tk.Frame(self.window, width=80, height=60)
-        self.box_frame.place(x=20, y=120)
+        self.box_frame.grid(row=1, column=1,rowspan=2,columnspan=2)
         self.listbox = tk.Listbox(self.box_frame, selectmode=tk.SINGLE)
 
         for item in items:
@@ -31,7 +31,7 @@ class DeleteRecipeWindow:
 
 
         self.delete_button = tk.Button(window, text="Delete", command = self.view_recipe)
-        self.delete_button.place(x=300, y=300)
+        self.delete_button.grid(row=2, column=3)
 
 
     def view_recipe(self):
