@@ -10,15 +10,26 @@ class DeleteRecipeWindow:
 
         self.window = window
         self.main_window = main_window
-        self.window.geometry("300x300")
+        self.window.geometry("1000x1000")
 
         data = EditFile.read_from_file()
 
         items = sorted(list(data.keys()))
 
 
-        self.box_frame = tk.Frame(self.window, width=80, height=60)
-        self.box_frame.grid(row=1, column=1,rowspan=2,columnspan=2)
+        # Create the Listbox and Scrollbar
+        self.listbox = tk.Listbox(self.window, selectmode=tk.SINGLE)
+        self.scrollbar = tk.Scrollbar(self.window, orient="vertical", command=self.listbox.yview)
+        self.listbox.config(yscrollcommand=self.scrollbar.set)
+        
+        # Pack the Listbox and Scrollbar
+        self.listbox.place(x=200, y=200, width=100, height=200)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y, padx=10, pady=10)
+
+
+
+        """self.box_frame = tk.Frame(self.window, width=80, height=60)
+        self.box_frame.place(x=10, y=10)
         self.listbox = tk.Listbox(self.box_frame, selectmode=tk.SINGLE)
 
         for item in items:
@@ -27,11 +38,11 @@ class DeleteRecipeWindow:
                                   command=self.listbox.yview)
         self.listbox.configure(yscrollcommand=scrollbar.set)
         self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)"""
 
 
         self.delete_button = tk.Button(window, text="Delete", command = self.view_recipe)
-        self.delete_button.grid(row=2, column=3)
+        self.delete_button.place(x=200, y=200)
 
 
     def view_recipe(self):

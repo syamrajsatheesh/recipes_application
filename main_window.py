@@ -43,7 +43,8 @@ class MainWindow:
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         self.listbox.bind('<<ListboxSelect>>', self.open_view_recipe_window)
-        
+    
+
 
 
     def update_listbox(self, items):

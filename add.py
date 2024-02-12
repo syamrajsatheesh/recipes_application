@@ -10,32 +10,32 @@ class AddRecipeWindow:
         self.window = window
         self.main_window = main_window
         self.window.title("New Recipe")
-        self.window.geometry("850x500")
+        self.window.geometry("600x450")
 
         ## remove
         self.items = [f"Item {i}" for i in range(1, 21)]
 
         self.recipe_name = tk.Label(window, text="Recipe name")
-        self.recipe_name.grid(row=0, column=0, padx=10, pady=10)
+        self.recipe_name.grid(row=1, column=0, padx=10, pady=10)
 
         self.recipe_name_entry = tk.Entry(window)
-        self.recipe_name_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.recipe_name_entry.grid(row=1, column=1, padx=10, pady=10)
 
         self.check_button = tk.Button(self.window, text="Check", command=self.check_redundancy)
-        self.check_button.grid(row=0, column=2, padx=1, pady=10)
+        self.check_button.grid(row=1, column=2, padx=1, pady=10)
 
         self.steps = tk.Label(window, text="Steps")
-        self.steps.grid(row=1, column=0, padx=10, pady=10)
+        self.steps.grid(row=2, column=0, padx=10, pady=10)
 
         self.steps_scroll = tk.Scrollbar(window)
-        self.steps_scroll.grid(row=1, column=6, sticky="nsew")
+        self.steps_scroll.grid(row=2, column=6, sticky="nsew")
 
         self.steps_box = tk.Text(window, height=20, width=50, wrap="word", yscrollcommand=self.steps_scroll.set)
-        self.steps_box.grid(row=1, column=1, columnspan=5, padx=10, pady=10)
+        self.steps_box.grid(row=2, column=1, columnspan=5, padx=10, pady=10)
         self.steps_scroll.config(command=self.steps_box.yview)
 
         self.save_button = tk.Button(window, text="Save", command=self.save_data_to_dat)
-        self.save_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+        self.save_button.grid(row=3, column=4, columnspan=2, padx=10, pady=10)
 
 
     def check_redundancy(self):
