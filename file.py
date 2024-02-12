@@ -25,6 +25,11 @@ class EditFile:
             with open("database.dat", 'wb') as file:
                 pickle.dump(data, file)
             return data
+    
+    def overwrite_file(data):
+
+        with open("database.dat", 'wb') as file:
+            pickle.dump(data, file)
 
 
     def read_from_file():

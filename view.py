@@ -1,9 +1,10 @@
 import tkinter as tk
 
 class ViewRecipeWindow:
-    def __init__(self, window):
+    def __init__(self, window, recipe_name):
         self.window = window
-        self.window.title("Recipe Viewer")
+        self.window.title(recipe_name)
+        self.window.geometry("600x450")
 
         self.scrollbar = tk.Scrollbar(window)
         self.scrollbar.place(x=20, y=120)

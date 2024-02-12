@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.messagebox
-import pickle
 from file import EditFile
 
 class AddRecipeWindow:
@@ -11,9 +10,6 @@ class AddRecipeWindow:
         self.main_window = main_window
         self.window.title("New Recipe")
         self.window.geometry("600x450")
-
-        ## remove
-        self.items = [f"Item {i}" for i in range(1, 21)]
 
         self.recipe_name = tk.Label(window, text="Recipe name")
         self.recipe_name.grid(row=1, column=0, padx=10, pady=10)
@@ -47,40 +43,21 @@ class AddRecipeWindow:
             tkinter.messagebox.showinfo("Warning", "Recipe not  in the database")
 
 
-    """def save_content(self):
-        essay_title = self.recipe_name_entry.get()
-        essay_content = self.steps_box.get("1.0", tk.END)
-        print("Recipe Name:", essay_title)
-        print("Recipe Steps:")
-        print(essay_content)"""
-
-
     def save_data_to_dat(self):
 
         flag = False
 
         key = self.recipe_name_entry.get()
-
-        if key == None or key == "":
-            tkinter.messagebox.showinfo("Warning!", 'Write the Recipe Name.')
-        else:
-            flag = True
-
         value = self.steps_box.get("1.0", tk.END)
 
-        if value == None or value == "":
-            flag = False
-            tkinter.messagebox.showinfo("Warning!", 'Write the Steps.')
+        if key == None or key == "" or value == None or value == "":
+            if key == None or key == "":
+                tkinter.messagebox.showinfo("Warning!", 'Write the Recipe Name.')
+            if value == None or value == "":
+                tkinter.messagebox.showinfo("Warning!", 'Write the Steps.')
+            
         else:
-            pass
-
-        if flag==True:
-
             existing_data = EditFile.write_to_file(key, value)
 
             self.main_window.update_listbox(list(existing_data.keys()))
             self.window.destroy()
-
-        else:
-            tkinter.messagebox.showinfo("Warning!", 'Fill the boxes')
-
