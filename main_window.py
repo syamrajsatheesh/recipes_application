@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.messagebox
-import pickle
 from add import AddRecipeWindow
 from view import ViewRecipeWindow
 from delete import DeleteRecipeWindow

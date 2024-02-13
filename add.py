@@ -9,35 +9,40 @@ class AddRecipeWindow:
         self.window = window
         self.main_window = main_window
         self.window.title("New Recipe")
-        self.window.geometry("600x450")
+        self.window.geometry("600x500")
+
+        self.data = None
 
         self.recipe_name = tk.Label(window, text="Recipe name")
-        self.recipe_name.grid(row=1, column=0, padx=10, pady=10)
+        self.recipe_name.place(x=20, y=20)
 
         self.recipe_name_entry = tk.Entry(window)
-        self.recipe_name_entry.grid(row=1, column=1, padx=10, pady=10)
+        self.recipe_name_entry.place(x=100, y=20, width =380)
 
         self.check_button = tk.Button(self.window, text="Check", command=self.check_redundancy)
-        self.check_button.grid(row=1, column=2, padx=1, pady=10)
+        self.check_button.place(x=520, y=15)
 
         self.steps = tk.Label(window, text="Steps")
-        self.steps.grid(row=2, column=0, padx=10, pady=10)
+        self.steps.place(x=20, y=50)
 
-        self.steps_scroll = tk.Scrollbar(window)
-        self.steps_scroll.grid(row=2, column=6, sticky="nsew")
+        self.steps_box = tk.Text(window, height=20, width=50, wrap="word")
+        self.steps_box.place(x=100, y=60, width=380, height=400)
 
-        self.steps_box = tk.Text(window, height=20, width=50, wrap="word", yscrollcommand=self.steps_scroll.set)
-        self.steps_box.grid(row=2, column=1, columnspan=5, padx=10, pady=10)
-        self.steps_scroll.config(command=self.steps_box.yview)
+        self.steps_scrollbar = tk.Scrollbar(self.steps_box, command=self.steps_box.yview)
+        self.steps_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.steps_box.config(yscrollcommand=self.steps_scrollbar.set)
+
 
         self.save_button = tk.Button(window, text="Save", command=self.save_data_to_dat)
-        self.save_button.grid(row=3, column=4, columnspan=2, padx=10, pady=10)
+        self.save_button.place(x=520, y=440)
 
 
     def check_redundancy(self):
 
+        self.data = EditFile.read_from_file()
+
         name = self.recipe_name_entry.get()
-        if name in self.items:
+        if name.lower() in [x.lower() for x in list(self.data.keys())]:
             tkinter.messagebox.showinfo("Warning!", 'Recipe already exists in database.')
         else:
             tkinter.messagebox.showinfo("Warning", "Recipe not  in the database")
@@ -45,7 +50,6 @@ class AddRecipeWindow:
 
     def save_data_to_dat(self):
 
-        flag = False
 
         key = self.recipe_name_entry.get()
         value = self.steps_box.get("1.0", tk.END)
@@ -57,7 +61,7 @@ class AddRecipeWindow:
                 tkinter.messagebox.showinfo("Warning!", 'Write the Steps.')
             
         else:
-            existing_data = EditFile.write_to_file(key, value)
+            existing_data = EditFile.write_to_file(key.title(), value)
 
             self.main_window.update_listbox(list(existing_data.keys()))
             self.window.destroy()
