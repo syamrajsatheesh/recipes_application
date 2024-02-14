@@ -31,7 +31,7 @@ class MainWindow:
         items = sorted(list(data.keys()))
 
         self.box_frame = tk.Frame(self.window)
-        self.box_frame.place(x=20, y=120, width=300, height=200)
+        self.box_frame.pack(side=tk.LEFT, fill=tk.BOTH, padx=20, pady=40, expand=True)
         self.listbox = tk.Listbox(self.box_frame, selectmode=tk.SINGLE, font=("arial", 12))
 
         for item in items:
